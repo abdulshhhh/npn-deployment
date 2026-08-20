@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DataGuard Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+<div class="ambient ambient-a"></div><div class="ambient ambient-b"></div>
+<div class="app-shell">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">DG</div>
+      <div>
+        <h2>DataGuard</h2>
+        <small>AI Data Quality Studio</small>
+      </div>
+    </div>
+
+    <nav>
+      <div class="nav-section-label">Workspace</div>
+      <button class="nav-item active" data-page="overview"><span>⌂</span><b>Overview</b></button>
+      <button class="nav-item" data-page="sources"><span>＋</span><b>Data Sources</b></button>
+      <button class="nav-item" data-page="explorer"><span>⌗</span><b>Data Explorer</b></button>
+      <button class="nav-item" data-page="integration"><span>⇄</span><b>Integration Studio</b></button>
+      <button class="nav-item" data-page="validation"><span>✓</span><b>Validation Studio</b></button>
+      <button class="nav-item" data-page="quality"><span>◈</span><b>DQ Breakdown</b></button>
+      <div class="nav-section-label">Pipeline</div>
+      <button class="nav-item" data-page="streaming"><span>ϟ</span><b>Kafka Monitor</b></button>
+      <button class="nav-item" data-page="spark"><span>✦</span><b>Spark Performance</b></button>
+      <button class="nav-item" data-page="exports"><span>↥</span><b>Export Center</b></button>
+      <button class="nav-item" data-page="history"><span>↺</span><b>Run History</b></button>
+    </nav>
+
+    <div class="system-box">
+      <div class="eyebrow">PIPELINE STATUS</div>
+      <div class="status-row"><span>Kafka</span><span id="kafkaMini" class="status-pill off">Disconnected</span></div>
+      <div class="status-row"><span>Spark</span><span id="sparkMini" class="status-pill off">Disconnected</span></div>
+      <div class="status-row"><span>Custom Rules</span><span id="ruleMini" class="status-pill neutral">0</span></div>
+    </div>
+
+    <button id="resetBtn" class="btn ghost full">Reset Data</button>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div>
+        <div class="eyebrow">COGNIZANT HACKATHON • DATA INTEGRATION & VALIDATION</div>
+        <h1 id="pageTitle">Overview</h1>
+        <p id="pageSubtitle">Reusable batch, validation, streaming and data-quality workspace.</p>
+      </div>
+      <div class="top-actions">
+        <div class="source-switcher"><span class="eyebrow">ACTIVE DATASET</span><select id="activeSourceSelect" class="field compact"><option value="">No source selected</option></select></div>
+        <span id="sourceBadge" class="badge">No source selected</span>
+        <button id="openChatTop" class="btn ai">✦ Ask DataGuard</button>
+        <button id="themeToggle" class="theme-toggle" type="button" title="Switch to light theme" aria-label="Switch to light theme">☀</button>
+      </div>
+    </header>
+
+    <!-- OVERVIEW -->
+    <section id="page-overview" class="page active">
+      <div class="hero-card">
+        <span class="hero-logo-ring-secondary" aria-hidden="true"></span>
+        <span class="hero-data-network" aria-hidden="true">
+          <span class="data-core-hologram"></span>
+          <span class="data-energy-pulse"></span>
+          <span class="ai-bot bot-one"><i></i><b></b></span>
+          <span class="ai-bot bot-two"><i></i><b></b></span>
+          <span class="ai-bot bot-three"><i></i><b></b></span>
+          <span class="ai-bot bot-four"><i></i><b></b></span>
+          <span class="ai-bot bot-five"><i></i><b></b></span>
+          <span class="data-connection connection-one"></span>
+          <span class="data-connection connection-two"></span>
+          <span class="data-connection connection-three"></span>
+          <span class="hero-data-orbit orbit-one">
+            <span class="data-node node-one">●</span>
+            <span class="data-node node-two">◆</span>
+            <span class="data-flow-dot flow-one"></span>
+            <span class="data-packet packet-one">01</span>
+            <span class="data-packet packet-two">DQ</span>
+          </span>
+          <span class="hero-data-orbit orbit-two">
+            <span class="data-node node-three">◇</span>
+            <span class="data-node node-four">+</span>
+            <span class="data-flow-dot flow-two"></span>
+            <span class="data-packet packet-three">10</span>
+            <span class="data-packet packet-four">AI</span>
+          </span>
+          <span class="hero-data-orbit orbit-three">
+            <span class="data-node node-five">×</span>
+            <span class="data-node node-six">01</span>
+            <span class="data-node node-seven">●</span>
+            <span class="data-node node-eight">◇</span>
+            <span class="data-flow-dot flow-three"></span>
+            <span class="data-packet packet-five">✓</span>
+            <span class="data-packet packet-six">01</span>
+            <span class="micro-symbol symbol-one">DQ</span>
+            <span class="micro-symbol symbol-two">AI</span>
+            <span class="micro-symbol symbol-three">✓</span>
+            <span class="micro-symbol symbol-four">+</span>
+            <span class="micro-symbol symbol-five">10</span>
+          </span>
+          <span class="data-scan-arc"></span>
+          <span class="validation-signal">✓</span>
+          <span class="data-particle particle-one"></span>
+          <span class="data-particle particle-two"></span>
+          <span class="data-particle particle-three"></span>
+          <span class="data-particle particle-four"></span>
+          <span class="data-particle particle-five"></span>
+          <span class="data-particle particle-six"></span>
+          <span class="data-particle particle-seven"></span>
+          <span class="data-particle particle-eight"></span>
+          <span class="data-particle particle-nine"></span>
+          <span class="data-particle particle-ten"></span>
+          <span class="data-particle particle-eleven"></span>
+          <span class="data-particle particle-twelve"></span>
+        </span>
+        <div>
+          <span class="hero-chip">Unified Data Quality Pipeline</span>
+          <h2>Ingest. Validate. Stream. Explain. Export.</h2>
+          <p>Use one reusable workspace for files, configurable rules, Kafka-style streams, Spark-style partitions, data-quality metrics and AI-assisted analysis.</p>
+        </div>
+        <div class="hero-actions">
+          <button id="demoBtn" class="btn primary">Load Dataset</button>
+          <button id="validateDefaultTop" class="btn secondary">Run Default Validation</button>
+        </div>
+      </div>
+
+      <div class="metrics-grid six">
+        <div class="metric-card"><span>Records</span><strong id="mRecords">0</strong><small>current dataset</small></div>
+        <div class="metric-card green"><span>Valid</span><strong id="mValid">0</strong><small>passed validation</small></div>
+        <div class="metric-card red"><span>Invalid</span><strong id="mInvalid">0</strong><small>failed records</small></div>
+        <div class="metric-card amber"><span>Quarantined</span><strong id="mQuarantine">0</strong><small>isolated safely</small></div>
+        <div class="metric-card violet"><span>DQ Score</span><strong id="mScore">0%</strong><small>5-dimension score</small></div>
+        <div class="metric-card cyan"><span>Rules</span><strong id="mRules">0</strong><small>custom rules</small></div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-head">
+            <div><h3>DQ Snapshot</h3><p>Current quality dimensions.</p></div>
+            <button class="link-btn" data-goto="quality">Open breakdown →</button>
+          </div>
+          <div class="dq-mini-grid">
+            <div><span>Completeness</span><b id="miniCompleteness">0%</b></div>
+            <div><span>Validity</span><b id="miniValidity">0%</b></div>
+            <div><span>Uniqueness</span><b id="miniUniqueness">0%</b></div>
+            <div><span>Consistency</span><b id="miniConsistency">0%</b></div>
+            <div><span>Integrity</span><b id="miniIntegrity">0%</b></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head"><div><h3>Performance Snapshot</h3><p>Latest processing metrics.</p></div><button class="link-btn" data-goto="spark">Open performance →</button></div>
+          <div class="perf-mini-grid">
+            <div><span>Rows/sec</span><b id="miniRps">0</b></div>
+            <div><span>Validation</span><b id="miniValidationMs">0 ms</b></div>
+            <div><span>Partitions</span><b id="miniPartitions">4</b></div>
+            <div><span>Kafka Lag</span><b id="miniKafkaLag">0</b></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <div><h3>Current Dataset</h3><p>Preview the dataset currently driving the workspace.</p></div>
+          <div class="actions"><button class="btn ghost" data-goto="explorer">Explore Data</button><a class="btn ghost" href="/download/original?format=csv">CSV</a></div>
+        </div>
+        <div id="overviewTable" class="table-wrap empty-state">Load a dataset to begin.</div>
+      </div>
+    </section>
+
+    <!-- SOURCES -->
+    <section id="page-sources" class="page">
+      <div class="section-intro source-intro">
+        <div>
+          <span class="section-kicker">INGEST</span>
+          <h2>Bring your data in. See exactly what is queued.</h2>
+          <p>Add multiple files or a REST source without replacing anything already connected. Files are staged visibly before upload, so there are no mystery selections.</p>
+        </div>
+        <div class="intro-pulse"><span></span> Unified ingestion layer</div>
+      </div>
+
+      <div class="source-command-card">
+        <div class="source-add-tabs" role="tablist">
+          <button class="source-tab active" data-source-tab="file"><span class="tab-icon">▣</span><span><b>Files</b><small>CSV, Excel, JSON, Parquet, SQL</small></span></button>
+          <button class="source-tab" data-source-tab="rest"><span class="tab-icon">◎</span><span><b>REST API</b><small>JSON endpoints</small></span></button>
+        </div>
+
+        <div id="sourceTabFile" class="source-tab-panel active">
+          <div class="ingest-layout">
+            <div class="drop-column">
+              <label class="upload-zone" for="fileInput" id="uploadZone">
+                <div class="upload-orbit"><span>＋</span></div>
+                <strong>Choose files or drop them here</strong>
+                <span>CSV · XLSX · XLS · JSON · PARQUET · SQL · SQLite</span>
+                <em>Multiple files supported</em>
+                <input id="fileInput" type="file" multiple accept=".csv,.xlsx,.xls,.json,.parquet,.sql,.db,.sqlite,.sqlite3">
+              </label>
+            </div>
+
+            <div class="staged-column">
+              <div class="staged-head">
+                <div><span class="section-kicker">READY TO ADD</span><h3>Selected files</h3></div>
+                <div class="staged-actions"><span id="selectedFilesCount" class="count-pill">0 files</span><button id="clearSelectedFilesBtn" class="text-btn" type="button">Clear</button></div>
+              </div>
+              <div id="selectedFilesList" class="selected-files-list empty-state compact-empty">Choose files to see them here before they are added.</div>
+              <div class="source-form compact-source-form">
+                <label><span>Dataset name <small>optional for a single file</small></span><input id="datasetName" class="field" placeholder="e.g. Sales Orders"></label>
+                <button id="uploadBtn" class="btn primary full"><span>＋</span> Add Selected Source(s)</button>
+                <div id="uploadResult" class="message subtle">Nothing has been added yet.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="sourceTabRest" class="source-tab-panel">
+          <div class="rest-ingest-grid">
+            <div class="rest-visual">
+              <div class="rest-node">API</div><div class="rest-line"></div><div class="rest-node active">DG</div>
+              <h3>Connect a JSON endpoint</h3><p>DataGuard will ingest the response as another independent source.</p>
+            </div>
+            <div class="rest-form-wrap">
+              <div class="form-grid">
+                <label><span>Dataset name</span><input id="restName" class="field" placeholder="e.g. products_api"></label>
+                <label style="grid-column:1/-1"><span>REST JSON URL</span><input id="restUrl" class="field" placeholder="https://example.com/api/products"></label>
+              </div>
+              <button id="addRestBtn" class="btn primary">＋ Ingest REST Source</button>
+              <div id="restResult" class="message subtle">Provide a JSON API endpoint.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="content-card source-library-card">
+        <div class="content-head">
+          <div><span class="section-kicker">SOURCE LIBRARY</span><h3>Connected sources</h3><p>Pick any source as the active dataset. Nothing gets replaced when a new source is added.</p></div>
+          <strong id="sourceCount" class="count-pill">0 sources</strong>
+        </div>
+        <div id="sourceRegistry" class="source-registry empty-state">No sources added yet.</div>
+      </div>
+
+      <div class="content-card preview-shell">
+        <div class="content-head">
+          <div><span class="section-kicker">PREVIEW</span><h3>Current source</h3><p>A quick look at the dataset currently driving Explorer, Validation and DQ.</p></div>
+          <button class="btn ghost" data-goto="explorer">Open in Explorer →</button>
+        </div>
+        <div id="sourceTable" class="table-wrap empty-state">No source selected.</div>
+      </div>
+    </section>
+
+    <!-- INTEGRATION STUDIO -->
+    <section id="page-integration" class="page">
+      <div class="section-intro integration-intro">
+        <div>
+          <span class="section-kicker">INTEGRATE</span>
+          <h2>Combine datasets without wrestling with joins.</h2>
+          <p>The recommended path is simple: name the project, choose the sources, let DataGuard discover relationships, then build. Manual joins stay available when you want full control.</p>
+        </div>
+        <div class="intro-actions">
+          <button id="newIntegrationBtn" class="btn ghost">New project</button>
+          <button id="smartIntegrationBtn" class="btn primary">Auto Integrate</button>
+        </div>
+      </div>
+
+      <div class="flow-strip" aria-label="Integration workflow">
+        <div class="flow-step active"><span>1</span><div><b>Name</b><small>Create the workspace</small></div></div>
+        <i></i>
+        <div class="flow-step active"><span>2</span><div><b>Select</b><small>Choose your datasets</small></div></div>
+        <i></i>
+        <div class="flow-step"><span>3</span><div><b>Connect</b><small>Discover relationships</small></div></div>
+        <i></i>
+        <div class="flow-step"><span>4</span><div><b>Build</b><small>Create integrated data</small></div></div>
+      </div>
+
+      <div class="integration-main-grid">
+        <div class="content-card project-setup-card">
+          <div class="step-heading"><span>01</span><div><h3>Name your integration</h3><p>Use a clear reusable name such as “Sales Analysis”.</p></div><span id="integrationProjectBadge" class="badge">No project</span></div>
+          <div class="project-name-row">
+            <input id="integrationProjectName" class="field field-lg" placeholder="e.g. Sales Analysis">
+            <button id="createIntegrationBtn" class="btn secondary">Save Project</button>
+          </div>
+        </div>
+
+        <div class="content-card smart-summary-card">
+          <div class="smart-symbol">✦</div>
+          <div><span class="section-kicker">RECOMMENDED</span><h3>Smart Integration</h3><p>DataGuard profiles key patterns and value overlap, then proposes the safest high-confidence relationships.</p></div>
+          <span class="badge good">No SQL required</span>
+        </div>
+      </div>
+
+      <div class="content-card dataset-selection-card">
+        <div class="step-heading"><span>02</span><div><h3>Choose the datasets to combine</h3><p>Select at least two. Your original sources stay untouched.</p></div><strong id="integrationSourceCount" class="count-pill">0 selected</strong></div>
+        <div id="integrationSourcePicker" class="integration-source-picker empty-state">Add sources from Data Sources first.</div>
+        <div class="base-dataset-bar">
+          <div><span class="section-kicker">START FROM</span><p>The base dataset is the first table in the integration chain.</p></div>
+          <label><span>Base dataset</span><select id="integrationBaseSource" class="field"></select></label>
+          <button id="saveIntegrationSourcesBtn" class="btn secondary">Use Selected Sources</button>
+        </div>
+      </div>
+
+      <div class="content-card smart-integration-card">
+        <div class="step-heading"><span>03</span><div><h3>Let DataGuard map the relationships</h3><p>Analyze first if you want to review the proposed links, or build automatically in one click.</p></div><span class="badge good">Default workflow</span></div>
+        <div id="smartIntegrationMessage" class="smart-status">Select your datasets above to begin.</div>
+        <div id="smartIntegrationRelationships" class="integration-steps empty-state">Relationship suggestions will appear here.</div>
+        <div class="smart-action-bar">
+          <label><span>Output name</span><input id="smartIntegrationProjectName" class="field" placeholder="Project name, e.g. Sales Analysis" value="Sales Analysis"></label>
+          <button id="smartAnalyzeBtn" class="btn secondary">Analyze Relationships</button>
+          <button id="smartBuildBtn" class="btn primary">Build Automatically</button>
+        </div>
+      </div>
+
+      <details class="advanced-panel integration-advanced">
+        <summary><span><b>Advanced manual joins</b><small>Choose exact keys, join type and normalization when the automatic relationship is not what you need.</small></span><span class="summary-action">Open controls</span></summary>
+        <div class="advanced-panel-body">
+          <div class="advanced-join-header">
+            <div><span class="section-kicker">MANUAL JOIN BUILDER</span><h3>Define a relationship</h3></div>
+            <span id="integrationStepBadge" class="badge">0 joins</span>
+          </div>
+          <div class="join-builder-visual">
+            <div class="integration-endpoint">
+              <span class="section-kicker">LEFT / CURRENT</span>
+              <strong id="integrationLeftLabel">Choose project sources</strong>
+              <small id="integrationLeftRows">—</small>
+            </div>
+            <div class="join-bridge"><span>⇄</span><small>JOIN</small></div>
+            <div class="integration-endpoint">
+              <span class="section-kicker">RIGHT DATASET</span>
+              <select id="integrationRightSource" class="field"></select>
+            </div>
+          </div>
+          <div class="form-grid integration-key-grid">
+            <label><span>Left join column</span><select id="integrationLeftKey" class="field"></select></label>
+            <label><span>Right join column</span><select id="integrationRightKey" class="field"></select></label>
+            <label><span>Join type</span><select id="integrationJoinType" class="field"><option value="left">Left Join — keep all left rows</option><option value="inner">Inner Join — matched rows only</option><option value="right">Right Join</option><option value="outer">Full Outer Join</option></select></label>
+            <label class="integration-check"><span>Schema normalization</span><label class="toggle-line"><input id="integrationNormalize" type="checkbox" checked><span>Convert mismatched join-key types automatically</span></label></label>
+          </div>
+          <div id="integrationCandidateMessage" class="message subtle">Select a right dataset to inspect possible join keys.</div>
+          <div class="candidate-chips" id="integrationCandidates"></div>
+          <div class="manual-join-actions"><button id="addJoinBtn" class="btn secondary">＋ Add Join Step</button><button id="buildIntegrationBtn" class="btn primary">Build Advanced Integration</button></div>
+          <div id="integrationSteps" class="integration-steps empty-state">No joins configured yet.</div>
+        </div>
+      </details>
+
+      <div class="integration-output-grid">
+        <div class="content-card integration-report-card">
+          <div class="content-head"><div><span class="section-kicker">RESULT</span><h3>Integration report</h3><p>Check match quality before sending the combined dataset to validation.</p></div></div>
+          <div id="integrationReportMetrics" class="integration-report-metrics">
+            <div><span>Sources</span><b>0</b></div><div><span>Joins</span><b>0</b></div><div><span>Rows</span><b>0</b></div><div><span>Columns</span><b>0</b></div><div><span>DQ Score</span><b>—</b></div>
+          </div>
+          <div id="integrationValidationSummary" class="integration-validation-summary"></div>
+          <div id="integrationJoinReport" class="integration-join-report empty-state">Build an integration to generate the report.</div>
+          <div id="integrationIssues" class="integration-issues"></div>
+        </div>
+
+        <div class="content-card integration-ready-card">
+          <div class="ready-orbit"><span>✓</span></div>
+          <span class="section-kicker">NEXT STEP</span><h3>Validate the combined dataset</h3><p>Once built, the integrated dataset appears in the active-dataset switcher and is available everywhere in DataGuard.</p>
+          <span id="combinedDatasetBadge" class="badge">Not built</span>
+          <button class="btn secondary" data-goto="validation">Open Validation Studio →</button>
+        </div>
+      </div>
+
+      <div class="content-card preview-shell">
+        <div class="content-head"><div><span class="section-kicker">COMBINED PREVIEW</span><h3>Integrated dataset</h3><p>Preview the generated output without leaving the workflow.</p></div></div>
+        <div id="integrationPreview" class="table-wrap empty-state">Build the integration to preview the combined dataset.</div>
+      </div>
+    </section>
+
+    <!-- EXPLORER -->
+    <section id="page-explorer" class="page">
+      <div class="metrics-grid four">
+        <div class="metric-card"><span>Rows</span><strong id="profileRows">0</strong></div>
+        <div class="metric-card"><span>Columns</span><strong id="profileCols">0</strong></div>
+        <div class="metric-card"><span>Memory</span><strong id="profileMemory">0 MB</strong></div>
+        <div class="metric-card"><span>Missing Cells</span><strong id="profileMissing">0</strong></div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-head"><div><h3>Column Visualizer</h3><p>Select any column to inspect its distribution.</p></div></div>
+          <div class="form-row">
+            <select id="visualColumn" class="field"><option value="">Select column</option></select>
+            <button id="visualizeBtn" class="btn primary">Visualize</button>
+          </div>
+          <div class="chart-box"><canvas id="columnChart"></canvas></div>
+        </div>
+        <div class="card">
+          <div class="card-head"><div><h3>Missingness by Column</h3><p>Quickly spot incomplete fields.</p></div></div>
+          <div class="chart-box"><canvas id="missingChart"></canvas></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><div><h3>Data Profile</h3><p>Datatype, completeness, uniqueness and numeric summaries.</p></div><a class="btn ghost" href="/download/profile?format=xlsx">Export Profile</a></div>
+        <div id="profileTable" class="table-wrap empty-state">Load a dataset to generate a profile.</div>
+      </div>
+    </section>
+
+    <!-- VALIDATION -->
+    <section id="page-validation" class="page">
+      <div class="section-intro validation-intro">
+        <div>
+          <span class="section-kicker">VALIDATE</span>
+          <h2>See the problem, choose the fix, prove the result.</h2>
+          <p>Validation is arranged as one guided workflow. Scan first, review clear issue cards, inspect only the useful columns, preview your cleaning plan, then revalidate.</p>
+        </div>
+        <div class="intro-actions">
+          <button id="resetFixesBtn" class="btn ghost">Reset Plan</button>
+          <button id="scanQualityBtn" class="btn primary">Scan Dataset</button>
+        </div>
+      </div>
+
+      <div class="validation-progress">
+        <div class="validation-stage active"><span>1</span><div><b>Scan</b><small>Detect issues</small></div></div>
+        <i></i><div class="validation-stage"><span>2</span><div><b>Decide</b><small>Choose safe fixes</small></div></div>
+        <i></i><div class="validation-stage"><span>3</span><div><b>Preview</b><small>Review changes</small></div></div>
+        <i></i><div class="validation-stage"><span>4</span><div><b>Validate</b><small>Confirm quality</small></div></div>
+      </div>
+
+      <div class="metrics-grid four validation-health-metrics">
+        <div class="metric-card violet"><span>Data Quality</span><strong id="cleanDQScore">0%</strong><small>current score</small></div>
+        <div class="metric-card red"><span>Issues Found</span><strong id="cleanIssueCount">0</strong><small>issue groups</small></div>
+        <div class="metric-card amber"><span>Rows Affected</span><strong id="cleanAffectedRows">0</strong><small>across detected issues</small></div>
+        <div class="metric-card cyan"><span>Columns</span><strong id="cleanColumnsAffected">0</strong><small>needing attention</small></div>
+      </div>
+
+      <div class="content-card issues-board">
+        <div class="content-head">
+          <div><span class="section-kicker">STEP 1 · FIND</span><h3>What needs attention?</h3><p>Issues are shown as readable cards instead of a narrow scrolling list. Pick one to inspect it.</p></div>
+          <span id="scanStatus" class="badge">Not scanned</span>
+        </div>
+        <div id="qualityIssues" class="quality-issues empty-state">Load a dataset, then scan it.</div>
+      </div>
+
+      <div class="content-card fix-card-modern">
+        <div class="content-head">
+          <div><span class="section-kicker">STEP 2 · DECIDE</span><h3>Inspect and choose a fix</h3><p id="fixSubtitle">Select an issue above.</p></div>
+        </div>
+        <div id="fixPanel" class="fix-panel-empty">Your selected issue, affected rows and safe fix options will appear here.</div>
+      </div>
+
+      <div class="content-card preview-card-modern">
+        <div class="content-head">
+          <div><span class="section-kicker">STEP 3 · PREVIEW</span><h3>Review the cleaning plan</h3><p>Nothing changes in the original dataset until you apply the preview.</p></div>
+          <div class="actions">
+            <button id="previewFixBtn" class="btn secondary">Preview Selected Fixes</button>
+            <button id="applyFixBtn" class="btn primary">Apply & Revalidate</button>
+          </div>
+        </div>
+        <div id="fixSummary" class="message subtle">Choose one or more fixes to build a cleaning plan.</div>
+        <div class="before-after-grid modern-before-after">
+          <div class="preview-pane"><div class="mini-section-title">CHANGE PLAN</div><div id="changesTable" class="table-wrap empty-state">No changes previewed yet.</div></div>
+          <div class="preview-pane"><div class="mini-section-title">CLEANED DATA PREVIEW</div><div id="cleanPreviewTable" class="table-wrap empty-state">Preview the selected fixes to see the result.</div></div>
+        </div>
+      </div>
+
+      <div class="content-card result-card-modern">
+        <div class="content-head">
+          <div><span class="section-kicker">STEP 4 · VERIFY</span><h3>Validation result</h3><p>Review what passed, failed or was quarantined after the cleaning step.</p></div>
+          <button id="runCombinedBtn" class="btn secondary">Run Combined Validation</button>
+        </div>
+        <div class="result-tabs" role="tablist">
+          <button class="result-tab active" data-result-tab="valid"><span>✓</span> Valid</button>
+          <button class="result-tab" data-result-tab="invalid"><span>!</span> Invalid</button>
+          <button class="result-tab" data-result-tab="quarantine"><span>◇</span> Quarantine</button>
+          <button class="result-tab" data-result-tab="issues"><span>≡</span> Issues</button>
+        </div>
+        <div id="resultTabValid" class="result-panel active"><div id="appliedValidTable" class="table-wrap empty-state">Run validation to see valid records.</div></div>
+        <div id="resultTabInvalid" class="result-panel"><div id="appliedInvalidTable" class="table-wrap empty-state">Run validation to see invalid records.</div></div>
+        <div id="resultTabQuarantine" class="result-panel"><div id="quarantineTable" class="table-wrap empty-state">No quarantined records.</div></div>
+        <div id="resultTabIssues" class="result-panel"><div id="issuesTable" class="table-wrap empty-state">No issues available.</div></div>
+      </div>
+
+      <details class="advanced-panel advanced-validation">
+        <summary><span><b>Advanced Validation Rules</b><small>Custom rules, temporary previews, combined validation and Auto Fix remain fully available.</small></span><span class="summary-action">Open advanced tools</span></summary>
+        <div class="advanced-panel-body advanced-inner">
+          <div class="validation-layout">
+            <div class="content-card builder-card">
+              <div class="content-head"><div><span class="section-kicker">RULE BUILDER</span><h3>Dynamic Validation Builder</h3><p>Create reusable rules against any loaded column.</p></div><span class="badge violet">Custom</span></div>
+              <div class="form-grid">
+                <label><span>Rule Type</span><select id="ruleType" class="field"><option value="duplicate">Duplicate / Composite Duplicate</option><option value="required">Required / Not Null</option><option value="unique">Unique</option><option value="range">Range</option><option value="allowed_values">Allowed Values</option><option value="datatype">Datatype</option><option value="regex">Regex Pattern</option><option value="non_negative">Non-negative</option></select></label>
+                <label><span>Severity</span><select id="ruleSeverity" class="field"><option>LOW</option><option selected>MEDIUM</option><option>HIGH</option></select></label>
+              </div>
+              <div class="rule-explainer" id="ruleExplainer">Choose the columns that together define a duplicate. Example: Name + Country + District + Village.</div>
+              <div><div class="label-row"><span>Choose Columns</span><small id="columnHint">Multiple columns allowed</small></div><div id="ruleColumns" class="checkbox-grid"><span class="muted">Load a dataset first.</span></div></div>
+              <div id="ruleParams" class="rule-params"></div>
+              <div class="form-grid"><label><span>Rule Name</span><input id="ruleName" class="field" placeholder="e.g. Customer identity duplicate"></label><div class="align-end"><button id="addRuleBtn" class="btn primary full">+ Add Rule</button></div></div>
+            </div>
+
+            <div class="content-card">
+              <div class="content-head"><div><span class="section-kicker">RUN MODE</span><h3>Validation Modes</h3><p>Use the original advanced controls whenever you need them.</p></div></div>
+              <div class="validation-mode-list">
+                <div class="mode-box"><div><b>Default Validation</b><p>Built-in checks for nulls, duplicates, negatives and order rules.</p></div><button id="runDefaultBtn" class="btn secondary">Run Default</button></div>
+                <div class="mode-box"><div><b>Temporary Custom Preview</b><p>Test enabled custom rules without changing data.</p></div><button id="previewCustomBtn" class="btn ai">Preview Custom</button></div>
+                <div class="mode-box"><div><b>Combined Validation</b><p>Run built-in and custom rules together.</p></div><button id="runCombinedBtnAdvanced" class="btn primary">Run Combined</button></div>
+                <div class="mode-box"><div><b>Auto Fix</b><p>Create a cleaned copy using the existing safe fixes.</p></div><button id="autoFixBtn" class="btn warning">Auto Fix & Revalidate</button></div>
+              </div>
+              <div id="validationSummary" class="message subtle">No validation run yet.</div>
+            </div>
+          </div>
+
+          <div class="content-card"><div class="content-head"><div><span class="section-kicker">CUSTOM RULES</span><h3>Rule Library</h3><p>Enable, disable or delete rules instantly.</p></div><a class="btn ghost" href="/download/rules?format=json">Export Rules</a></div><div id="rulesTable" class="table-wrap empty-state">No custom rules created.</div></div>
+
+          <div class="grid-2">
+            <div class="content-card"><div class="content-head"><div><h3>Temporary Valid Data</h3><p>Rows passing only your current custom rules.</p></div><div class="actions"><a class="btn tiny" href="/download/temp_valid?format=csv">CSV</a><a class="btn tiny" href="/download/temp_valid?format=xlsx">Excel</a></div></div><div id="tempValidTable" class="table-wrap empty-state">Run Custom Preview.</div></div>
+            <div class="content-card"><div class="content-head"><div><h3>Temporary Invalid Data</h3><p>Rows failing your current custom rules.</p></div><div class="actions"><a class="btn tiny" href="/download/temp_invalid?format=csv">CSV</a><a class="btn tiny" href="/download/temp_invalid?format=xlsx">Excel</a></div></div><div id="tempInvalidTable" class="table-wrap empty-state">Run Custom Preview.</div></div>
+          </div>
+        </div>
+      </details>
+    </section>
+
+    <!-- DQ -->
+    <section id="page-quality" class="page">
+      <div class="dq-hero">
+        <div class="score-orbit"><span>Overall DQ</span><strong id="dqOverall">0%</strong><small>balanced quality index</small></div>
+        <div class="dq-bars">
+          <div class="dq-row"><span>Completeness</span><div class="bar"><i id="barCompleteness"></i></div><b id="dqCompleteness">0%</b></div>
+          <div class="dq-row"><span>Validity</span><div class="bar"><i id="barValidity"></i></div><b id="dqValidity">0%</b></div>
+          <div class="dq-row"><span>Uniqueness</span><div class="bar"><i id="barUniqueness"></i></div><b id="dqUniqueness">0%</b></div>
+          <div class="dq-row"><span>Consistency</span><div class="bar"><i id="barConsistency"></i></div><b id="dqConsistency">0%</b></div>
+          <div class="dq-row"><span>Integrity</span><div class="bar"><i id="barIntegrity"></i></div><b id="dqIntegrity">0%</b></div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-head"><div><h3>Before vs After</h3><p>Compare the original data with the cleaned result.</p></div></div>
+          <div class="chart-box"><canvas id="dqCompareChart"></canvas></div>
+        </div>
+        <div class="card">
+          <div class="card-head"><div><h3>How to Improve This Dataset</h3><p>Suggestions generated from the current DQ breakdown.</p></div></div>
+          <div id="dqTips" class="tips-list"><div class="tip">Load data to receive targeted quality tips.</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STREAMING -->
+    <section id="page-streaming" class="page">
+      <div class="card pipeline-card">
+        <div class="pipeline-node"><span>Producer</span><b>Event Simulator</b></div><div class="pipe">→</div>
+        <div class="pipeline-node purple"><span>Broker</span><b>Kafka</b></div><div class="pipe">→</div>
+        <div class="pipeline-node cyan"><span>Processor</span><b>Spark</b></div><div class="pipe">→</div>
+        <div class="pipeline-node green"><span>Rules</span><b>Validation</b></div><div class="pipe">→</div>
+        <div class="pipeline-node amber"><span>Output</span><b>Dashboard</b></div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><div><h3>Kafka + Spark Controls</h3><p>UI simulation now; endpoints are isolated so real Kafka/PySpark can replace them later.</p></div><span id="streamBadge" class="badge danger">STOPPED</span></div>
+        <div class="actions">
+          <button id="kafkaBtn" class="btn secondary">Connect Kafka</button>
+          <button id="sparkBtn" class="btn secondary">Connect Spark</button>
+          <button id="streamBtn" class="btn primary">Start Stream</button>
+          <button id="injectBtn" class="btn warning">Inject Bad Event</button>
+          <button id="clearStreamBtn" class="btn ghost">Clear Stream</button>
+        </div>
+      </div>
+
+      <div class="metrics-grid six">
+        <div class="metric-card"><span>Processed</span><strong id="sProcessed">0</strong></div>
+        <div class="metric-card green"><span>Valid</span><strong id="sValid">0</strong></div>
+        <div class="metric-card red"><span>Invalid</span><strong id="sInvalid">0</strong></div>
+        <div class="metric-card amber"><span>Kafka Lag</span><strong id="sLag">0</strong></div>
+        <div class="metric-card cyan"><span>Events/sec</span><strong id="sRate">0</strong></div>
+        <div class="metric-card violet"><span>Live DQ</span><strong id="sQuality">0%</strong></div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card"><div class="card-head"><div><h3>Kafka Partition Monitor</h3><p>Offsets and simulated consumer lag.</p></div></div><div id="kafkaPartitionTable" class="table-wrap empty-state">Start the stream to populate offsets.</div></div>
+        <div class="card"><div class="card-head"><div><h3>Live Quality Trend</h3><p>Streaming validation quality over time.</p></div></div><div class="chart-box"><canvas id="qualityChart"></canvas></div></div>
+      </div>
+      <div class="card"><div class="card-head"><div><h3>Live Events</h3><p>Each incoming event is validated immediately.</p></div></div><div id="streamTable" class="table-wrap empty-state">Connect Kafka and Spark, then start the stream.</div></div>
+    </section>
+
+    <!-- SPARK -->
+    <section id="page-spark" class="page">
+      <div class="metrics-grid six">
+        <div class="metric-card"><span>Ingestion</span><strong id="pIngestion">0 ms</strong></div>
+        <div class="metric-card"><span>Validation</span><strong id="pValidation">0 ms</strong></div>
+        <div class="metric-card cyan"><span>Rows/sec</span><strong id="pRps">0</strong></div>
+        <div class="metric-card violet"><span>Partitions</span><strong id="pPartitions">4</strong></div>
+        <div class="metric-card amber"><span>Skew Ratio</span><strong id="pSkew">0</strong></div>
+        <div class="metric-card green"><span>Memory</span><strong id="pMemory">0 MB</strong></div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><div><h3>Spark Partition Viewer</h3><p>Visualize how a Spark-style repartition could distribute your dataset.</p></div><span class="badge">Partition Model</span></div>
+        <div class="form-row wrap">
+          <label class="compact-label">Partitions<input id="partitionCount" class="field small" type="number" min="1" max="32" value="4"></label>
+          <label class="compact-label">Partition Key<select id="partitionKey" class="field"><option value="">Sequential preview</option></select></label>
+          <button id="partitionBtn" class="btn primary">Visualize Partitions</button>
+        </div>
+        <div id="partitionNote" class="message subtle">Choose a key to preview hash repartitioning. Same key values will map to the same partition.</div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card"><div class="card-head"><div><h3>Partition Distribution</h3><p>Rows allocated to each partition.</p></div></div><div class="chart-box"><canvas id="partitionChart"></canvas></div></div>
+        <div class="card"><div class="card-head"><div><h3>Partition Details</h3><p>Rows, memory and sample keys.</p></div></div><div id="partitionTable" class="table-wrap empty-state">Load a dataset and visualize partitions.</div></div>
+      </div>
+    </section>
+
+    <!-- EXPORT -->
+    <section id="page-exports" class="page">
+      <div class="export-hero">
+        <div><span class="hero-chip">Export Center</span><h2>Take every useful layer of your data with you.</h2><p>Export original, valid, invalid, cleaned, temporary validation results, rules, profiles, DQ metrics and audit history.</p></div>
+        <a class="btn primary large" href="/download/bundle">Download Complete ZIP Bundle</a>
+      </div>
+
+      <div class="export-grid">
+        <div class="export-card"><div class="export-icon blue">RAW</div><h3>Original Dataset</h3><p>Untouched source data.</p><div class="actions"><a href="/download/original?format=csv" class="btn tiny">CSV</a><a href="/download/original?format=xlsx" class="btn tiny">Excel</a><a href="/download/original?format=json" class="btn tiny">JSON</a></div></div>
+        <div class="export-card"><div class="export-icon green">OK</div><h3>Valid Records</h3><p>Rows that passed applied validation.</p><div class="actions"><a href="/download/valid?format=csv" class="btn tiny">CSV</a><a href="/download/valid?format=xlsx" class="btn tiny">Excel</a></div></div>
+        <div class="export-card"><div class="export-icon red">BAD</div><h3>Invalid Records</h3><p>Rows requiring attention.</p><div class="actions"><a href="/download/invalid?format=csv" class="btn tiny">CSV</a><a href="/download/invalid?format=xlsx" class="btn tiny">Excel</a></div></div>
+        <div class="export-card"><div class="export-icon violet">FIX</div><h3>Cleaned Dataset</h3><p>Auto-fixed output.</p><div class="actions"><a href="/download/clean?format=csv" class="btn tiny">CSV</a><a href="/download/clean?format=xlsx" class="btn tiny">Excel</a><a href="/download/clean?format=json" class="btn tiny">JSON</a></div></div>
+        <div class="export-card"><div class="export-icon amber">TMP</div><h3>Custom Preview</h3><p>Temporary valid/invalid results.</p><div class="actions"><a href="/download/temp_valid?format=xlsx" class="btn tiny">Valid Excel</a><a href="/download/temp_invalid?format=xlsx" class="btn tiny">Invalid Excel</a></div></div>
+        <div class="export-card"><div class="export-icon cyan">DQ</div><h3>DQ & Profile</h3><p>Quality metrics and column profile.</p><div class="actions"><a href="/download/dq?format=xlsx" class="btn tiny">DQ</a><a href="/download/profile?format=xlsx" class="btn tiny">Profile</a></div></div>
+        <div class="export-card"><div class="export-icon purple">RULE</div><h3>Rules & Issues</h3><p>Reusable validation configuration.</p><div class="actions"><a href="/download/rules?format=json" class="btn tiny">Rules JSON</a><a href="/download/issues?format=xlsx" class="btn tiny">Issues</a></div></div>
+        <div class="export-card"><div class="export-icon amber">Q</div><h3>Quarantine</h3><p>Invalid records with quarantine metadata.</p><div class="actions"><a href="/download/quarantine?format=csv" class="btn tiny">CSV</a><a href="/download/quarantine?format=xlsx" class="btn tiny">Excel</a></div></div>
+        <div class="export-card"><div class="export-icon cyan">PERF</div><h3>Performance</h3><p>Processing, Spark and Kafka metrics.</p><div class="actions"><a href="/download/performance?format=csv" class="btn tiny">Metrics</a><a href="/download/partitions?format=xlsx" class="btn tiny">Partitions</a><a href="/download/kafka_events?format=csv" class="btn tiny">Events</a></div></div>
+        <div class="export-card"><div class="export-icon slate">LOG</div><h3>Audit History</h3><p>Processing run history.</p><div class="actions"><a href="/download/runs?format=csv" class="btn tiny">CSV</a><a href="/download/runs?format=xlsx" class="btn tiny">Excel</a></div></div>
+      </div>
+    </section>
+
+    <!-- HISTORY -->
+    <section id="page-history" class="page">
+      <div class="card">
+        <div class="card-head"><div><h3>Run History / Audit Trail</h3><p>Track validation mode, duration, throughput and DQ result.</p></div><a href="/download/runs?format=xlsx" class="btn ghost">Download Audit</a></div>
+        <div id="historyTable" class="table-wrap empty-state">No runs recorded.</div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- CHATBOT -->
+<button id="chatFab" class="chat-fab" title="Ask DataGuard">✦</button>
+<div id="chatPanel" class="chat-panel">
+  <div class="chat-head">
+    <div><div class="chat-avatar">DG</div><div><b>DataGuard Assistant</b><span>SQL retrieval + RAG knowledge</span></div></div>
+    <button id="closeChat" class="icon-btn">×</button>
+  </div>
+  <div class="chat-suggestions">
+    <button>What is my DQ score?</button>
+    <button>Show duplicate customerID</button>
+    <button>Which column has missing values?</button>
+    <button>How can I improve uniqueness?</button>
+  </div>
+  <div id="chatMessages" class="chat-messages">
+    <div class="bubble bot"><p>Ask me about your dataset, DQ score, missing values, duplicates, issues, Spark partitions or Kafka lag.</p></div>
+  </div>
+  <div class="chat-input-row">
+    <textarea id="chatInput" rows="2" placeholder="Ask about the current dataset..."></textarea>
+    <button id="sendChat" class="btn ai">Send</button>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+<script src="/static/app.js"></script>
+</body>
+</html>
